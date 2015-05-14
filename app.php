@@ -7,33 +7,20 @@ session_start();
        $client = new Google_Client();
 
 
-        // $storageService = new Google_Service_Storage($client);
-        $computeService = new Google_Service_Compute($client);
-
         define('API_VERSION', 'v1');
+        define('GOOGLE_PROJECT', 'google');
+        define('DEFAULT_DISK', 'https://www.googleapis.com/compute/v1/projects/versatile-digit-93720/zones/us-central1-b/diskTypes/pd-standard');
         define('DEFAULT_PROJECT', 'versatile-digit-93720');
-        define('DEFAULT_BUCKET', 'cluster-mgmt-bucket');
-        define('DEFAULT_OBJECT', 'mccartney.mp3');
+        define('BASE_URL', 'https://www.googleapis.com/compute/'. API_VERSION . '/projects/');
         define('DEFAULT_ZONE_NAME', 'us-central1-b');
-
-
-/**
- * Constants for sample request parameters.
- */
-
-/**
- * Generates the markup for a specific Google Cloud Storage API request.
- * @param string $apiRequestName The name of the API request to process.
- * @param string $apiResponse The API response to process.
- * @return string Markup for the specific Google Cloud Storage API request.
- */
-
-// function instantiate($project, $zone, Google_Service_Compute_Instance $postBody, $optParams = array())
-// {
-//   $params = array('versatile-digit-93720 ' => $project, 'us-central1-b' => $zone, 'postBody' => $postBody);
-//   $params = array_merge($params, $optParams);
-//   return $this->call('insert', array($params), "Google_Service_Compute_Operation");
-// }
+        define('DEFAULT_MACHINE_TYPE', BASE_URL . DEFAULT_PROJECT . '/zones/' . DEFAULT_ZONE_NAME . '/machineTypes/n1-standard-1');
+        define('DEFAULT_NAME', 'new-node');
+        define('DEFAULT_ZONE', BASE_URL . DEFAULT_PROJECT . '/zones/' . DEFAULT_ZONE_NAME);
+        define('DEFAULT_NAME_WITH_METADATA', 'new-node-with-metadata');
+        define('DEFAULT_IMAGE', BASE_URL . GOOGLE_PROJECT .
+  '/global/images/gcel-12-04-v20130104');
+        define('DEFAULT_NETWORK', BASE_URL . DEFAULT_PROJECT .
+  '/global/networks/default');
 
 
 function generateMarkup($apiRequestName, $apiResponse) {
@@ -78,26 +65,36 @@ if (isset($_SESSION['access_token'])) {
 
 // }
 if ($client->getAccessToken()) {
- // function listInstances($project, $zone) {
- //    $params = array('versatile-digit-93720' => $project, 'us-central1-b' => $zone);
- //    // $params = array_merge($params, $optParams);
- //    return $this->call('list', array($params), "Google_Service_Compute_InstanceList");
- //  }
+
     print "<pre>";
   $instances = $computeService->instances->listInstances(DEFAULT_PROJECT, DEFAULT_ZONE_NAME);
   $listInstancesMarkup = generateMarkup('List Instances', $instances);
 
-  // $buckets = $storageService->buckets->listBuckets(DEFAULT_PROJECT);
-  // $listBucketsMarkup = generateMarkup('List Buckets', $buckets);
+  // $name = DEFAULT_NAME_WITH_METADATA;
+  // $machineType = DEFAULT_MACHINE_TYPE;
+  // $zone = DEFAULT_ZONE_NAME;
+  // $disk = DEFAULT_DISK;
+  // $imageSpaceGb = DEFAULT_IMAGE;
+  // $googleNetworkInterfaceObj = new Google_Service_Compute_NetworkInterface();
+  // $googleAttachedDiskObj = new Google_Service_Compute_AttachedDisk();
+  // $network = DEFAULT_NETWORK;
+  // $googleNetworkInterfaceObj->setNetwork($network);
+  // $metadataItemsObj = new Google_Service_Compute_MetadataItems();
+  // $metadataItemsObj->setKey('startup-script');
+  // $metadataItemsObj->setValue('apt-get install apache2');
+  // $metadata = new Google_Service_Compute_Metadata();
+  // $metadata->setItems(array($metadataItemsObj));
+  // $new_instance = new Google_Service_Compute_Instance();
+  // $new_instance->setName($name);
+  // $new_instance->setMachineType($machineType);
+  // $new_instance->setNetworkInterfaces(array($googleNetworkInterfaceObj));
+  // $new_instance->setMetadata($metadata);
+  // // $new_instance->setDisks(array($googleAttachedDiskObj));
+  // $insertInstanceWithMetadata = $computeService->instances->insert(
+  //   DEFAULT_PROJECT, $zone, $new_instance);
+  // $insertInstanceWithMetadataMarkup = generateMarkup(
+  //   'Insert Instance With Metadata', $insertInstanceWithMetadata);
 
- 
-  // $bucketsAccessControls = $storageService->bucketAccessControls->
-  //   listBucketAccessControls(DEFAULT_BUCKET);
-  // $listBucketsAccessControlsMarkup = generateMarkup(
-  //   'List Buckets Access Controls', $bucketsAccessControls);
-
-  // $bucket = $storageService->buckets->get(DEFAULT_BUCKET);
-  // $getBucketMarkup = generateMarkup('Get Bucket', $bucket);
 
   $_SESSION['access_token'] = $client->getAccessToken();
 } else {
@@ -113,39 +110,8 @@ if ($client->getAccessToken()) {
     <header><h1>Google Cloud Storage Sample App</h1></header>
     <div class="main-content">
       <?php if ($instances): ?>
-        <p><strong>Hooray!</strong> There's instances, but they cannot be seen yet!</p>
+        <p>05.14.15 <strong>Hooray!</strong> There's instances, and they can finally be seen!</p>
       <?php endif ?>
-
-      <?php if(isset($listBucketsMarkup)): ?>
-        <div id="listBuckets">
-          <?php print $listBucketsMarkup ?>
-        </div>
-      <?php endif ?>
-
-      <?php if(isset($listObjectsMarkup)): ?>
-        <div id="listObjects">
-          <?php print $listObjectsMarkup ?>
-        </div>
-      <?php endif ?>
-
-      <?php if(isset($listBucketsAccessControlsMarkup)): ?>
-        <div id="listBucketsAccessControls">
-          <?php print $listBucketsAccessControlsMarkup ?>
-        </div>
-      <?php endif ?>
-
-      <?php if(isset($listObjectsAccessControlsMarkup)): ?>
-        <div id="listObjectsAccessControls">
-          <?php print $listObjectsAccessControlsMarkup ?>
-        </div>
-      <?php endif ?>
-
-      <?php if(isset($getBucketMarkup)): ?>
-        <div id="getBucket">
-          <?php print $getBucketMarkup ?>
-        </div>
-      <?php endif ?>
-
       <?php
         if(isset($authUrl)) {
           print "<a class='login' href='$authUrl'>Authorize Me!</a>";
@@ -153,6 +119,15 @@ if ($client->getAccessToken()) {
           print "<a class='logout' href='?logout'>Logout</a>";
         }
       ?>
+
+
+      <?php if(isset($listInstancesMarkup)): ?>
+        <div id="listBuckets">
+          <?php print $listInstancesMarkup ?>
+        </div>
+      <?php endif ?>
+
+
     </div>
   </body>
 </html>
