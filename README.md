@@ -1,17 +1,8 @@
 # Google Cloud Storage PHP Sample Application
 
 ## Description
-This is a simple web-based example of calling the Google Cloud Storage API in
-PHP.
+This is a new version of the old Google Cloud Storage PHP Sample App from 2013. It primarily focuses on starting/stopping/displaying instances from Google Developer's Console. It's goal is to set up pre-configured instances with a click of a button. Keys and IDs must be added if you wish to use.
 
-## Prerequisites:
-Please make sure that all of the following is installed before trying to run
-the sample application.
-
-- PHP 5.2.x or higher [http://www.php.net/]
-- PHP Curl extension [http://www.php.net/manual/en/intro.curl.php]
-- PHP JSON extension [http://php.net/manual/en/book.json.php]
-- The google-api-php-client library checked out locally
 
 ## Setup Authentication
 NOTE: This README assumes that you have enabled access to the Google Cloud
@@ -43,5 +34,3 @@ strings starting with 'YOUR_DEFAULT_' with their associated values.
 4) Load app.php on your web server, and visit the appropriate website in
 your web browser.
 
-## More Information
-See [https://developers.google.com/storage/docs/json_api/v1/json-api-php-samples](https://developers.google.com/storage/docs/json_api/v1/json-api-php-samples)
