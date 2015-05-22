@@ -6,13 +6,23 @@ session_start();
 
        $client = new Google_Client();
 
+        $client->setApplicationName("Google Cloud Storage PHP Starter Application");
+        $client->setClientId('');
+        $client->setClientSecret('');
+        $client->setRedirectUri('http://localhost:8080/');
+        $client->setDeveloperKey('');
+        $client->setScopes('https://www.googleapis.com/auth/compute');
+ 
+        // $storageService = new Google_Service_Storage($client);
+        $computeService = new Google_Service_Compute($client);
+
         // $storageService = new Google_Service_Storage($client);
         $computeService = new Google_Service_Compute($client);
 
         define('API_VERSION', 'v1');
         define('GOOGLE_PROJECT', 'google');
 
-        define('DEFAULT_DISK', 'https://www.googleapis.com/compute/v1/projects/versatile-digit-93720/zones/us-central1-b/diskTypes/pd-standard');
+        define('DEFAULT_DISK', 'https://www.googleapis.com/compute/v1/projects/ZONE/zones/us-central1-b/diskTypes/pd-standard');
         define('DEFAULT_PROJECT', 'versatile-digit-93720');
 
         define('BASE_URL', 'https://www.googleapis.com/compute/'. API_VERSION . '/projects/');
